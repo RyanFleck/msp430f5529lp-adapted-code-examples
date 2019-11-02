@@ -11,6 +11,7 @@ void setup() {
   // put your setup code here, to run once:
   pinMode(GREEN_LED, OUTPUT);
   pinMode(P1_1, INPUT_PULLUP);
+  pinMode(P2_1, INPUT_PULLUP);
 
   run = 0;
 
@@ -22,21 +23,21 @@ void setup() {
 void loop() {
 
   // Read the input pin.
-  run = digitalRead(P1_1);
+  run = digitalRead(P1_1) & digitalRead(P2_1);
 
   // Check if message for change to current status has been printed.
   if( toggle != printed ){
     Serial.print("Value of run is ");
-    Serial.println(run);
+    Serial.println(toggle);
     printed = toggle;
   }
 
   // Do the toggling.
-  if(run == 0){
-    digitalWrite(GREEN_LED, HIGH);
+  if(digitalRead(P1_1) & digitalRead(P2_1)){
+    digitalWrite(GREEN_LED, LOW);
     toggle = 1;
   }else{
-    digitalWrite(GREEN_LED, LOW);
+    digitalWrite(GREEN_LED, HIGH);
     toggle = 2;
   }
 
