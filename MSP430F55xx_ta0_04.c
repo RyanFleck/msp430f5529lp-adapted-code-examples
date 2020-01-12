@@ -79,14 +79,8 @@ int main(void)
 }
 
 // Timer0_A5 Interrupt Vector (TAIV) handler
-#if defined(__TI_COMPILER_VERSION__) || defined(__IAR_SYSTEMS_ICC__)
 #pragma vector=TIMER0_A1_VECTOR
 __interrupt void TIMER0_A1_ISR(void)
-#elif defined(__GNUC__)
-void __attribute__ ((interrupt(TIMER0_A1_VECTOR))) TIMER0_A1_ISR (void)
-#else
-#error Compiler not supported!
-#endif
 {
   switch(__even_in_range(TA0IV,14))
   {

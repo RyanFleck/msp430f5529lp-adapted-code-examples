@@ -1,7 +1,7 @@
 /*
- * Button enables green LED. Polling version.
- * To get serial feedback use COM4 to as serial port.
- */
+   Button enables green LED. Polling version.
+   To get serial feedback use COM4 to as serial port.
+*/
 
 int run;
 int toggle;
@@ -15,7 +15,7 @@ void setup() {
 
   run = 0;
 
-  
+
   Serial.begin(9600);
   Serial.println("Command one");
 }
@@ -26,17 +26,17 @@ void loop() {
   run = digitalRead(P1_1) & digitalRead(P2_1);
 
   // Check if message for change to current status has been printed.
-  if( toggle != printed ){
+  if ( toggle != printed ) {
     Serial.print("Value of run is ");
     Serial.println(toggle);
     printed = toggle;
   }
 
   // Do the toggling.
-  if(digitalRead(P1_1) & digitalRead(P2_1)){
+  if (digitalRead(P1_1) & digitalRead(P2_1)) {
     digitalWrite(GREEN_LED, LOW);
     toggle = 1;
-  }else{
+  } else {
     digitalWrite(GREEN_LED, HIGH);
     toggle = 2;
   }
