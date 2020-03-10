@@ -12,6 +12,8 @@
  */
 void SetVcoreUp (unsigned int level);
 
+volatile unsigned int counter;
+
 int main(void)
 {
     // Stop watch-dog timer
@@ -21,6 +23,9 @@ int main(void)
     // This allows us to use P4.7 LED as an OUTPUT.
     P4DIR |= BIT7;
     P4OUT &= ~BIT7; // Turns LED off.
+    P1DIR |= BIT0;
+    P1OUT |= BIT0; // Turns LED off.
+    counter = 0;
 
     /**
      * TIMER CONFIGURATION
@@ -120,13 +125,17 @@ __interrupt void TIMER0_A0_ISR(void)
 #pragma vector=TIMER0_A1_VECTOR
 __interrupt void TIMER0_A1_ISR(void)
 {
-    P1OUT ^= 0x01; // Toggle P1.0
     switch (TA0IV)
     {
     case TA0IV_NONE:
         break;
     case TA0IV_TACCR1:
-        P4OUT ^= BIT7; // Toggle the LED bit.
+        counter++;
+        if( counter > 5 ){
+          P4OUT ^= BIT7; // Toggle the LED bit.
+          P1OUT ^= BIT0;
+          counter = 0;
+        }
         break;
     case TA0IV_TACCR2:
         break;
