@@ -8,7 +8,8 @@
  *  0. Set up timer module.
  *  1. Increases core voltage to Level 3.
  *  2. Increases clock speed to 25MHz.
- *  3. Blinks LED2 at P4.7 @6 Hz
+ *  3. Blinks LED2 at P4.7 @1 Hz
+ *     Blinks LED1 at P1.0 @1 Hz
  */
 void SetVcoreUp (unsigned int level);
 
@@ -22,9 +23,9 @@ int main(void)
     // Set the seventh bit of the P4 Data Direction Register to HIGH
     // This allows us to use P4.7 LED as an OUTPUT.
     P4DIR |= BIT7;
-    P4OUT &= ~BIT7; // Turns LED off.
+    P4OUT &= ~BIT7; // Turns Green LED off.
     P1DIR |= BIT0;
-    P1OUT |= BIT0; // Turns LED off.
+    P1OUT |= BIT0; // Turns Red LED on.
     counter = 0;
 
     /**
@@ -57,6 +58,12 @@ int main(void)
      * 
      * 25000000 / ( 64 * 65535 ) = 5.960555428397039749
      * -> Light will blink every 0.1677696‬ seconds, ~6Hz.
+     * 
+     * REVISION: Light toggles every 1 Hz, as a counter variable
+     *  counts up every time the interrupt is triggered, being
+     *  reset every time the count becomes 6 or over, effectively
+     *  blinking the lights (at a frequency shifted by 1s) every
+     *  second.
      */
 
 
